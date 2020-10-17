@@ -1,47 +1,17 @@
 from data.Task import Task
 from generator.Generator import Generator
+from generator.metadata.MetadataGenerator import MetadataGenerator
 from generator.start_point.StartPointFiller import StartPointFiller
 from structure.DSU import DSU
 import lorem
 import numpy as np
 
-def create_graph_metadata(tasks):
-    count_start_tasks = 0
-    is_blocker = set()
-    for task in tasks:
-        if len(task.depends_on) == 0:
-            count_start_tasks += 1
-        for blocked in task.depends_on:
-            is_blocker.add(blocked)
-    count_end_tasks = len(tasks) - len(is_blocker)
-
-    critical_path_time_length = 0
-    for task in tasks:
-        critical_path_time_length = max(
-            critical_path_time_length,
-            task.start + task.time)
-
-    dependencies = 0
-    for task in tasks:
-        dependencies += len(task.depends_on)
-
-    vehas = 0
-    for task in tasks:
-        if task.is_veha:
-            vehas += 1
-
-    return {
-        "critical_path_time_length": critical_path_time_length,
-        "end_tasks": count_end_tasks,
-        "start_tasks": count_start_tasks,
-        "total_dependencies": dependencies,
-        "vehas_count": vehas
-    }
-
 class DefaultGenerator(Generator):
-    def __init__(self, start_point_filler):
+    def __init__(self, start_point_filler, metadata_generator):
         self.start_point_filler = start_point_filler
         assert(isinstance(start_point_filler, StartPointFiller))
+        self.metadata_generator = metadata_generator
+        assert(isinstance(metadata_generator, MetadataGenerator))
 
     def generate_data(self, size=1000, count_vehas=5, seed=0, print_metadata=True):
         tasks = []
@@ -116,7 +86,7 @@ class DefaultGenerator(Generator):
         self.start_point_filler.fill_start_points(tasks)
 
         if print_metadata:
-            metadata = create_graph_metadata(tasks)
+            metadata = self.metadata_generator.generate_metadata(tasks)
             for field in metadata:
                 print(field, ':', metadata[field])
 
