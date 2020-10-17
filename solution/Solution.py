@@ -1,8 +1,10 @@
 from abc import ABC, abstractmethod
+from data.Task import Task
+from typing import List
 
 class Solution(ABC):
     @abstractmethod
-    def solve(self, tasks):
+    def solve(self, tasks: List[Task]) -> List[Task]:
         pass
 
     @abstractmethod
