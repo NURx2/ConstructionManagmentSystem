@@ -8,6 +8,7 @@ from generator.start_point.DefaultStartPointFiller import DefaultStartPointFille
 from generator.WeightedGenerator import WeightedGenerator
 from solution.JustCopySolution import JustCopySolution
 from solution.LinearSolution import LinearSolution
+from solution.SimulatedAnnealingSolution import SimulatedAnnealingSolution
 from validation.CollisionDetector import CollisionDetector
 import json
 
@@ -28,7 +29,7 @@ def main():
         assert(data[index] == cached)
         index += 1
 
-    collision_generator = DefaultCollisionGenerator(collisions_needed=100)
+    collision_generator = DefaultCollisionGenerator(collisions_needed=10)
     new_tasks = collision_generator.generate_collisions(data)
     assert(len(detector.get_collisions(data)) == 0)
     assert(len(detector.get_collisions(new_tasks)) != 0)
@@ -36,7 +37,24 @@ def main():
 
     solutions = [
         JustCopySolution(),
-        LinearSolution()
+        LinearSolution(),
+        SimulatedAnnealingSolution(
+            K=3,
+            temp=100,
+            REDUCE=0.9993,
+            BOUND=0.5,
+            VEHA_COST=1000000,
+            MAX_VEHA_COUNT=10,
+        ),
+        SimulatedAnnealingSolution(
+            K=1,
+            temp=100,
+            REDUCE=0.9993,
+            BOUND=0.5,
+            VEHA_COST=1000000,
+            MAX_VEHA_COUNT=10,
+            prestart=LinearSolution().solve(new_tasks),
+        ),
     ]
     
     diff_generator = DiffGenerator()
@@ -45,14 +63,15 @@ def main():
         result = solution.solve(new_tasks)
         collisions_count = len(detector.get_collisions(result))
         if collisions_count != 0:
-            print("Solution", solution.name(), "failed, still have:", collisions_count, "collisions")
+            print("Solution", solution.name(), "failed, still have:", collisions_count, "collisions\n")
         else:
             report = diff_generator.generate_diff(new_tasks, result)
-            for diff in report.diff_list:
-                print("Whole change cost:", diff.whole_cost, ", was moved:", diff.was_moved, ", was shrinked:", diff.was_shrinked)
+            # for diff in report.diff_list:
+            #     print("Whole change cost:", diff.whole_cost, ", was moved:", diff.was_moved, ", was shrinked:", diff.was_shrinked)
+            print(f'{solution.name()} report:')
             print("Solution whole cost:", report.whole_cost)
             print("Moved tasks:", len(report.diff_list))
-            print("Success")
+            print("Success\n")
 
 if __name__ == '__main__':
     main()
