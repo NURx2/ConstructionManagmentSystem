@@ -7,6 +7,7 @@ def main():
     detector = CollisionDetector()
     print('Collisions:', len(detector.get_collisions(data)))
     print(len(data))
+    assert(len(detector.get_collisions(data)) == 0)
     for collision in detector.get_collisions(data):
         first, second = collision.first_task_id, collision.second_task_id
         print(first, second)
