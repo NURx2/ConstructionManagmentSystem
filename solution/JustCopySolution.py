@@ -6,3 +6,6 @@ class JustCopySolution(Solution):
         for task in tasks:
             result.append(task.copy())
         return result
+
+    def name(self):
+        return "JustCopySolution"
