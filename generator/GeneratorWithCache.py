@@ -11,7 +11,6 @@ class GeneratorWithCache(Generator):
     def generate_data(self, *args, **kwargs):
         key = str(args) + "-" + str(kwargs)
         if self.task_cache.is_in_cache(key):
-            print("Got from cache")
             return self.task_cache.load_from_cache(key)
 
         result = self.generator.generate_data(*args, **kwargs)
