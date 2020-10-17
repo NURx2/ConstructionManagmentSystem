@@ -47,10 +47,12 @@ def main():
         if collisions_count != 0:
             print("Solution", solution.name(), "failed, still have:", collisions_count, "collisions")
         else:
-            print("Success")
             report = diff_generator.generate_diff(new_tasks, result)
+            for diff in report.diff_list:
+                print("Whole change cost:", diff.whole_cost, ", was moved:", diff.was_moved, ", was shrinked:", diff.was_shrinked)
             print("Solution whole cost:", report.whole_cost)
             print("Moved tasks:", len(report.diff_list))
+            print("Success")
 
 if __name__ == '__main__':
     main()
