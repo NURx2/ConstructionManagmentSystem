@@ -1,6 +1,7 @@
 from cache.OfflineCache import OfflineCache
 from cache.TaskCache import TaskCache
 from collision.DefaultCollisionGenerator import DefaultCollisionGenerator
+from generator.GeneratorWithCache import GeneratorWithCache
 from generator.metadata.DefaultMetadataGenerator import DefaultMetadataGenerator
 from generator.start_point.DefaultStartPointFiller import DefaultStartPointFiller
 from generator.WeightedGenerator import WeightedGenerator
@@ -10,7 +11,8 @@ import json
 
 
 def main():
-    data = WeightedGenerator(DefaultStartPointFiller(), DefaultMetadataGenerator()).generate_data()
+    generator = GeneratorWithCache(WeightedGenerator(DefaultStartPointFiller(), DefaultMetadataGenerator()))
+    data = generator.generate_data()
     detector = CollisionDetector()
     print(len(data))
     assert(len(detector.get_collisions(data)) == 0)
