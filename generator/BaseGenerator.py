@@ -21,10 +21,15 @@ def create_graph_metadata(tasks):
             critical_path_time_length,
             task.start + task.time)
 
+    dependencies = 0
+    for task in tasks:
+        dependencies += len(task.depends_on)
+
     return {
-        "start_tasks": count_start_tasks,
+        "critical_path_time_length": critical_path_time_length,
         "end_tasks": count_end_tasks,
-        "critical_path_time_length": critical_path_time_length
+        "start_tasks": count_start_tasks,
+        "total_dependencies": dependencies
     }
 
 class BaseGenerator(Generator):
@@ -54,7 +59,7 @@ class BaseGenerator(Generator):
         
         count_edges = 0
 
-        edges = []
+        edges = set()
 
         while dsu.number_components() != 1: # Processing until whole graph is somehow connected
             l = np.random.randint(0, size)
@@ -73,12 +78,12 @@ class BaseGenerator(Generator):
                 if not dsu.is_same_group(l, r):
                     count_edges += 1
                     assert(dsu.merge(l, r))
-                    edges.append((l, r))
+                    edges.add((l, r))
             else:
                 count_edges += 1
                 dsu.merge(l, r)
                 assert(dsu.is_same_group(l, r))
-                edges.append((l, r))
+                edges.add((l, r))
 
         for (required, blocked) in edges:
             assert(required < blocked)
