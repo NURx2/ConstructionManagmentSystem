@@ -37,7 +37,7 @@ class BaseGenerator(Generator):
         self.start_point_filler = start_point_filler
         assert(isinstance(start_point_filler, StartPointFiller))
 
-    def generate_data(self, size=1000, seed=0, print_metadata=True):
+    def generate_data(self, size=1000, count_vehas=5, seed=0, print_metadata=True):
         tasks = []
         np.random.seed(seed) # making this less random))
         for i in range(size):
@@ -88,6 +88,24 @@ class BaseGenerator(Generator):
         for (required, blocked) in edges:
             assert(required < blocked)
             tasks[blocked].add_depends_on(required)
+
+        # now we need to generate some veha's!!!
+        # we'll pick some random indices from 10%-90% range tasks
+
+        middle_range = np.arange(size // 10, size * 9 // 10 + 1)
+        p = np.zeros(len(middle_range))
+        sum_deps = 0
+        for index in middle_range:
+            sum_deps += len(tasks[index].depends_on)
+        for index in middle_range:
+            p[index - size // 10] = len(tasks[index].depends_on) / sum_deps
+        veha_indices = sorted(np.random.choice(middle_range, count_vehas, p=p))
+        for veha_index in veha_indices:
+            tasks[veha_index].time = 0
+            tasks[veha_index].min_time = 0
+            tasks[veha_index].is_movable = False
+            tasks[veha_index].is_veha = True
+            tasks[veha_index].costs = {'moveBack': 100 * 10000, 'moveForward': 100 * 10000}
 
         self.start_point_filler.fill_start_points(tasks)
 
