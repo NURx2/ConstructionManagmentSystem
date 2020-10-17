@@ -1,4 +1,4 @@
-from generator.base_generator import BaseGenerator
+from generator.BaseGenerator import BaseGenerator
 from validation.CollisionDetector import CollisionDetector
 
 
