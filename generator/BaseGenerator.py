@@ -25,11 +25,17 @@ def create_graph_metadata(tasks):
     for task in tasks:
         dependencies += len(task.depends_on)
 
+    vehas = 0
+    for task in tasks:
+        if task.is_veha:
+            vehas += 1
+
     return {
         "critical_path_time_length": critical_path_time_length,
         "end_tasks": count_end_tasks,
         "start_tasks": count_start_tasks,
-        "total_dependencies": dependencies
+        "total_dependencies": dependencies,
+        "vehas_count": vehas
     }
 
 class BaseGenerator(Generator):
