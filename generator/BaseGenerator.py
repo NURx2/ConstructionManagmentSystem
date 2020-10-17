@@ -1,48 +1,9 @@
 from data.Task import Task
 from generator.Generator import Generator
+from generator.start_point.StartPointFiller import StartPointFiller
 from structure.DSU import DSU
 import lorem
 import numpy as np
-
-def fill_start_poins(tasks):
-    queue = []
-    blocker_to = dict()
-    for task in tasks:
-        if len(task.depends_on) == 0:
-            queue.append(task.id) # using that id == index in the list (data design leak, but fine for now)
-        for depends in task.depends_on:
-            if depends in blocker_to:
-                blocker_to[depends].add(task.id)
-            else:
-                blocker_to[depends] = set([task.id])
-    
-    used_links = dict()
-    max_blocker_time_values = dict()
-    visited = set()
-
-    for i in range(len(tasks)):
-        used_links[i] = 0
-        max_blocker_time_values[i] = 0
-
-    while len(queue) != 0:
-        task_id = queue[0]
-        queue = queue[1:]
-
-        assert(task_id not in visited)
-        visited.add(task_id)
-
-        if not task_id in blocker_to:
-            continue
-
-        for blocked in blocker_to[task_id]:
-            used_links[blocked] += 1
-            max_blocker_time_values[blocked] = max(
-                max_blocker_time_values[blocked],
-                tasks[task_id].start + tasks[task_id].time)
-            if used_links[blocked] == len(tasks[blocked].depends_on):
-                queue.append(blocked)
-                tasks[blocked].start = max_blocker_time_values[blocked] + 1
-
 
 def create_graph_metadata(tasks):
     count_start_tasks = 0
@@ -67,6 +28,10 @@ def create_graph_metadata(tasks):
     }
 
 class BaseGenerator(Generator):
+    def __init__(self, start_point_filler):
+        self.start_point_filler = start_point_filler
+        assert(isinstance(start_point_filler, StartPointFiller))
+
     def generate_data(self, size=1000, seed=0, print_metadata=True):
         tasks = []
         np.random.seed(seed) # making this less random))
@@ -119,7 +84,7 @@ class BaseGenerator(Generator):
             assert(required < blocked)
             tasks[blocked].add_depends_on(required)
 
-        fill_start_poins(tasks)
+        self.start_point_filler.fill_start_points(tasks)
 
         if print_metadata:
             metadata = create_graph_metadata(tasks)

@@ -1,10 +1,11 @@
 from generator.BaseGenerator import BaseGenerator
 from validation.CollisionDetector import CollisionDetector
 from collision.DefaultCollisionGenerator import DefaultCollisionGenerator
+from generator.start_point.DefaultStartPointFiller import DefaultStartPointFiller
 
 
 def main():
-    data = BaseGenerator().generate_data()
+    data = BaseGenerator(DefaultStartPointFiller()).generate_data()
     detector = CollisionDetector()
     print(len(data))
     assert(len(detector.get_collisions(data)) == 0)
