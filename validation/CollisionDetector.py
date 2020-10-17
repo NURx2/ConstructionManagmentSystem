@@ -1,4 +1,4 @@
-from data.task import Task
+from data.Task import Task
 
 class Collision:
     def __init__(self, first_task_id, second_task_id):

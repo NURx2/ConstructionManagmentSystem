@@ -1,6 +1,6 @@
 import lorem
-from generator.generator import Generator
-from data.task import Task
+from generator.Generator import Generator
+from data.Task import Task
 import numpy as np
 
 class DSU:
