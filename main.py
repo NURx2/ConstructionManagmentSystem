@@ -1,9 +1,12 @@
+from cache.OfflineCache import OfflineCache
+from cache.TaskCache import TaskCache
 from collision.DefaultCollisionGenerator import DefaultCollisionGenerator
-from generator.WeightedGenerator import WeightedGenerator
 from generator.metadata.DefaultMetadataGenerator import DefaultMetadataGenerator
 from generator.start_point.DefaultStartPointFiller import DefaultStartPointFiller
+from generator.WeightedGenerator import WeightedGenerator
 from solution.JustCopySolution import JustCopySolution
 from validation.CollisionDetector import CollisionDetector
+import json
 
 
 def main():
@@ -11,6 +14,10 @@ def main():
     detector = CollisionDetector()
     print(len(data))
     assert(len(detector.get_collisions(data)) == 0)
+
+    cache = TaskCache(OfflineCache)
+    cache.save(len(data), data)
+    assert(cache.is_in_cache(len(data)))
 
     collision_generator = DefaultCollisionGenerator()
     new_tasks = collision_generator.generate_collisions(data)
