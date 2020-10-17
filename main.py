@@ -25,7 +25,7 @@ def main():
         result = solution.solve(new_tasks)
         collisions_count = len(detector.get_collisions(result))
         if collisions_count != 0:
-            print("Solution", solution, "failed, still have:", collisions_count, "collisions")
+            print("Solution", solution.name(), "failed, still have:", collisions_count, "collisions")
 
 if __name__ == '__main__':
     main()
