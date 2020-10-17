@@ -16,6 +16,7 @@ def main():
     new_tasks = collision_generator.generate_collisions(data)
     assert(len(detector.get_collisions(data)) == 0)
     assert(len(detector.get_collisions(new_tasks)) != 0)
+    assert(len(data) == len(new_tasks))
 
     solutions = [
         JustCopySolution()
