@@ -15,6 +15,6 @@ class Diff:
         assert(before.id == after.id)
         self.was_moved = before.start != after.start
         self.was_shrinked = before.time != after.time
-        self.move_cost = None if not self.was_moved else calculate_move_cost(before, after)
-        self.shrink_cost = None if not self.was_shrinked else calculate_shrink_cost(before, after)
+        self.move_cost = 0 if not self.was_moved else calculate_move_cost(before, after)
+        self.shrink_cost = 0 if not self.was_shrinked else calculate_shrink_cost(before, after)
         self.whole_cost = self.move_cost + self.shrink_cost

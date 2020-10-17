@@ -1,4 +1,5 @@
 from data.Diff import Diff
+from typing import List
 
 class DiffReport:
     def __init__(self, diff_list: List[Diff], was_collisions: int, now_collisions):

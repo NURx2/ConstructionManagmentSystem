@@ -1,6 +1,7 @@
 from cache.OfflineCache import OfflineCache
 from cache.TaskCache import TaskCache
 from collision.DefaultCollisionGenerator import DefaultCollisionGenerator
+from diff.DiffGenerator import DiffGenerator
 from generator.GeneratorWithCache import GeneratorWithCache
 from generator.metadata.DefaultMetadataGenerator import DefaultMetadataGenerator
 from generator.start_point.DefaultStartPointFiller import DefaultStartPointFiller
@@ -27,7 +28,7 @@ def main():
         assert(data[index] == cached)
         index += 1
 
-    collision_generator = DefaultCollisionGenerator()
+    collision_generator = DefaultCollisionGenerator(collisions_needed=100)
     new_tasks = collision_generator.generate_collisions(data)
     assert(len(detector.get_collisions(data)) == 0)
     assert(len(detector.get_collisions(new_tasks)) != 0)
@@ -37,12 +38,19 @@ def main():
         JustCopySolution(),
         NaiveSolution()
     ]
+    
+    diff_generator = DiffGenerator()
 
     for solution in solutions:
         result = solution.solve(new_tasks)
         collisions_count = len(detector.get_collisions(result))
         if collisions_count != 0:
             print("Solution", solution.name(), "failed, still have:", collisions_count, "collisions")
+        else:
+            print("Success")
+            report = diff_generator.generate_diff(new_tasks, result)
+            print("Solution whole cost:", report.whole_cost)
+            print("Moved tasks:", len(report.diff_list))
 
 if __name__ == '__main__':
     main()
