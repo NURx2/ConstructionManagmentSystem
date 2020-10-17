@@ -38,7 +38,7 @@ def create_graph_metadata(tasks):
         "vehas_count": vehas
     }
 
-class BaseGenerator(Generator):
+class DefaultGenerator(Generator):
     def __init__(self, start_point_filler):
         self.start_point_filler = start_point_filler
         assert(isinstance(start_point_filler, StartPointFiller))
