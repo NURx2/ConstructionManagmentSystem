@@ -3,7 +3,7 @@ from generator.WeightedGenerator import WeightedGenerator
 from generator.metadata.DefaultMetadataGenerator import DefaultMetadataGenerator
 from generator.start_point.DefaultStartPointFiller import DefaultStartPointFiller
 from solution.JustCopySolution import JustCopySolution
-from solution.NaiveSolution import NaiveSolution
+from solution.LinearSolution import LinearSolution
 from validation.CollisionDetector import CollisionDetector
 
 
@@ -21,7 +21,7 @@ def main():
 
     solutions = [
         JustCopySolution(),
-        NaiveSolution()
+        LinearSolution()
     ]
 
     for solution in solutions:
