@@ -7,6 +7,5 @@ class Solution(ABC):
     def solve(self, tasks: List[Task]) -> List[Task]:
         pass
 
-    @abstractmethod
     def name(self):
-        pass
+        return self.__class__.__name__
