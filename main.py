@@ -18,6 +18,11 @@ def main():
     cache = TaskCache(OfflineCache)
     cache.save(len(data), data)
     assert(cache.is_in_cache(len(data)))
+    assert(len(cache.load_from_cache(len(data))) == len(data))
+    index = 0
+    for cached in cache.load_from_cache(len(data)):
+        assert(data[index] == cached)
+        index += 1
 
     collision_generator = DefaultCollisionGenerator()
     new_tasks = collision_generator.generate_collisions(data)
