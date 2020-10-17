@@ -1,4 +1,5 @@
 from collision.CollisionGenerator import CollisionGenerator
+import copy
 import numpy as np
 
 class DefaultCollisionGenerator(CollisionGenerator):
@@ -7,9 +8,7 @@ class DefaultCollisionGenerator(CollisionGenerator):
         self.random_seed = random_seed
 
     def generate_collisions(self, tasks_from):
-        tasks = []
-        for task in tasks_from:
-            tasks.append(task.copy())
+        tasks = copy.deepcopy(tasks_from)
         np.random.seed(self.random_seed)
         remaining_collisions = self.collisions_needed
 
