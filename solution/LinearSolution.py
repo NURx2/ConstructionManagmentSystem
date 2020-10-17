@@ -6,7 +6,7 @@ import copy
 from validation.CollisionDetector import CollisionDetector, Collision
 
 
-class NaiveSolution(Solution):
+class LinearSolution(Solution):
     def solve(self, tasks: List[Task]) -> List[Task]: # we need to copy tasks (to make previous tasks immutable)
         tasks = copy.deepcopy(tasks)
 
