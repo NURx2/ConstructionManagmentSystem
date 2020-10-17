@@ -1,12 +1,12 @@
 from collision.DefaultCollisionGenerator import DefaultCollisionGenerator
-from generator.DefaultGenerator import DefaultGenerator
+from generator.WeightedGenerator import WeightedGenerator
 from generator.metadata.DefaultMetadataGenerator import DefaultMetadataGenerator
 from generator.start_point.DefaultStartPointFiller import DefaultStartPointFiller
 from validation.CollisionDetector import CollisionDetector
 
 
 def main():
-    data = DefaultGenerator(DefaultStartPointFiller(), DefaultMetadataGenerator()).generate_data()
+    data = WeightedGenerator(DefaultStartPointFiller(), DefaultMetadataGenerator()).generate_data()
     detector = CollisionDetector()
     print(len(data))
     assert(len(detector.get_collisions(data)) == 0)
