@@ -10,6 +10,7 @@ from solution.JustCopySolution import JustCopySolution
 from solution.LinearSolution import LinearSolution
 from solution.SimulatedAnnealingSolution import SimulatedAnnealingSolution
 from validation.CollisionDetector import CollisionDetector
+import time
 import json
 
 
@@ -60,7 +61,9 @@ def main():
     diff_generator = DiffGenerator()
 
     for solution in solutions:
+        start_time = time.time()
         result = solution.solve(new_tasks)
+        duration = time.time() - start_time
         collisions_count = len(detector.get_collisions(result))
         if collisions_count != 0:
             print("Solution", solution.name(), "failed, still have:", collisions_count, "collisions\n")
@@ -69,6 +72,7 @@ def main():
             # for diff in report.diff_list:
             #     print("Whole change cost:", diff.whole_cost, ", was moved:", diff.was_moved, ", was shrinked:", diff.was_shrinked)
             print(f'{solution.name()} report:')
+            print(f'Took {duration:.10f} seconds to calculate')
             print("Solution whole cost:", report.whole_cost)
             print("Moved tasks:", len(report.diff_list))
             print("Success\n")
