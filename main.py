@@ -30,7 +30,7 @@ def main():
         assert(data[index] == cached)
         index += 1
 
-    collision_generator = DefaultCollisionGenerator(collisions_needed=10)
+    collision_generator = DefaultCollisionGenerator(collisions_needed=1000)
     new_tasks = collision_generator.generate_collisions(data)
     assert(len(detector.get_collisions(data)) == 0)
     assert(len(detector.get_collisions(new_tasks)) != 0)
@@ -39,21 +39,21 @@ def main():
     solutions = [
         JustCopySolution(),
         LinearSolution(),
-        SimulatedAnnealingSolution(
-            K=3,
-            temp=100,
-            REDUCE=0.9993,
-            BOUND=0.5,
-            VEHA_COST=1000000,
-            MAX_VEHA_COUNT=10,
-        ),
+        # SimulatedAnnealingSolution(
+        #     K=3,
+        #     temp=100,
+        #     REDUCE=0.9993,
+        #     BOUND=0.5,
+        #     VEHA_COST=1000000,
+        #     MAX_VEHA_COUNT=10,
+        # ),
         SimulatedAnnealingSolution(
             K=1,
-            temp=100,
-            REDUCE=0.9993,
+            temp=10,
+            REDUCE=0.993,
             BOUND=0.5,
             VEHA_COST=1000000,
-            MAX_VEHA_COUNT=10,
+            MAX_VEHA_COUNT=5,
             prestart=LinearSolution().solve(new_tasks),
         ),
     ]

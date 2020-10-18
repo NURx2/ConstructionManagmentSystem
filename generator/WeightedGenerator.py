@@ -13,7 +13,7 @@ class WeightedGenerator(Generator):
         self.metadata_generator = metadata_generator
         assert(isinstance(metadata_generator, MetadataGenerator))
 
-    def generate_data(self, size=1000, count_vehas=5, seed=0, print_metadata=True):
+    def generate_data(self, size=10000, count_vehas=5, seed=0, print_metadata=True):
         tasks = []
         np.random.seed(seed)
         for i in range(size):
