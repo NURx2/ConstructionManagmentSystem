@@ -38,5 +38,20 @@ class Task:
             self.lower_time,
             self.depends_on)
 
+    def __eq__(self, obj):
+        if not isinstance(obj, Task):
+            return False
+        return self.id == obj.id \
+            and self.name == obj.name \
+            and self.description == obj.description \
+            and self.is_veha == obj.is_veha \
+            and self.start == obj.start \
+            and self.is_movable == obj.is_movable \
+            and self.costs == obj.costs \
+            and self.min_time == obj.min_time \
+            and self.time == obj.time \
+            and self.lower_time == obj.lower_time \
+            and self.depends_on == obj.depends_on
+
     def __str__(self):
         return "Task [id: {}, name: {}, isVeha: {}]".format(self.id, self.name, self.is_veha)
