@@ -3,6 +3,7 @@ from generator.WeightedGenerator import WeightedGenerator
 from generator.metadata.DefaultMetadataGenerator import DefaultMetadataGenerator
 from generator.start_point.DefaultStartPointFiller import DefaultStartPointFiller
 from solution.JustCopySolution import JustCopySolution
+from solution.LinearSolution import LinearSolution
 from validation.CollisionDetector import CollisionDetector
 
 
@@ -19,7 +20,8 @@ def main():
     assert(len(data) == len(new_tasks))
 
     solutions = [
-        JustCopySolution()
+        JustCopySolution(),
+        LinearSolution()
     ]
 
     for solution in solutions:
